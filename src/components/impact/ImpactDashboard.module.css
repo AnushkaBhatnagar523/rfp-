@@ -1,0 +1,258 @@
+.dashboardContainer {
+  padding: 2.5rem;
+  border-radius: var(--radius-xl);
+  border: 1px solid var(--border-light);
+  width: 100%;
+}
+
+.header {
+  text-align: center;
+  margin-bottom: 2.5rem;
+}
+
+.header h2 {
+  font-family: var(--font-serif);
+  font-size: var(--font-size-2xl);
+  color: var(--primary);
+  margin-bottom: 0.5rem;
+}
+
+.header p {
+  color: var(--text-secondary);
+  font-size: var(--font-size-sm);
+  max-width: 600px;
+  margin: 0 auto;
+}
+
+.tabList {
+  display: flex;
+  justify-content: center;
+  border-bottom: 2px solid var(--border-light);
+  margin-bottom: 2.5rem;
+  overflow-x: auto;
+  gap: 1.5rem;
+}
+
+.tabBtn {
+  background: transparent;
+  border: none;
+  padding: 1rem 0.5rem;
+  font-family: var(--font-sans);
+  font-weight: 700;
+  font-size: var(--font-size-sm);
+  color: var(--text-secondary);
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  position: relative;
+  transition: color var(--transition-fast);
+  white-space: nowrap;
+}
+
+.tabBtn:hover {
+  color: var(--accent);
+}
+
+.tabBtn.activeTab {
+  color: var(--accent);
+}
+
+.tabBtn.activeTab::after {
+  content: '';
+  position: absolute;
+  bottom: -2px;
+  left: 0;
+  width: 100%;
+  height: 3px;
+  background-color: var(--accent);
+  border-radius: var(--radius-full);
+}
+
+.panelGrid {
+  display: grid;
+  grid-template-columns: 1.2fr 1.8fr;
+  gap: 2.5rem;
+  align-items: stretch;
+}
+
+.infoCol {
+  display: flex;
+  flex-direction: column;
+  gap: 1.5rem;
+}
+
+.bigStatCard {
+  background-color: var(--primary);
+  color: white;
+  padding: 2rem;
+  border-radius: var(--radius-lg);
+  box-shadow: var(--shadow-md);
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+}
+
+.statLabel {
+  font-size: var(--font-size-xs);
+  text-transform: uppercase;
+  font-weight: 700;
+  color: rgba(255, 255, 255, 0.6);
+  letter-spacing: 1px;
+}
+
+.statValue {
+  font-family: var(--font-sans);
+  font-size: clamp(2.5rem, 2rem + 3vw, 4rem);
+  font-weight: 900;
+  color: var(--accent);
+  line-height: 1;
+}
+
+.statDesc {
+  font-size: var(--font-size-xs);
+  color: rgba(255, 255, 255, 0.7);
+  margin: 0;
+  line-height: 1.5;
+}
+
+.breakdownCard {
+  background-color: var(--bg-secondary);
+  border: 1px solid var(--border-light);
+  padding: 1.5rem;
+  border-radius: var(--radius-lg);
+}
+
+.breakdownCard h3 {
+  font-family: var(--font-sans);
+  font-size: var(--font-size-sm);
+  font-weight: 700;
+  color: var(--text-primary);
+  margin-bottom: 1rem;
+}
+
+.breakdownList {
+  list-style: none;
+  display: flex;
+  flex-direction: column;
+  gap: 0.85rem;
+}
+
+.breakdownItem {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  font-size: var(--font-size-xs);
+  border-bottom: 1px dashed var(--border-light);
+  padding-bottom: 0.5rem;
+}
+
+.breakdownItem:last-child {
+  border-bottom: none;
+  padding-bottom: 0;
+}
+
+.breakdownTitle {
+  color: var(--text-secondary);
+  font-weight: 500;
+}
+
+.breakdownCount {
+  font-weight: 700;
+  color: var(--primary);
+}
+
+/* Chart Column */
+.chartCol {
+  display: flex;
+}
+
+.chartCard {
+  width: 100%;
+  padding: 2rem;
+  border-radius: var(--radius-lg);
+  box-shadow: var(--glass-shadow);
+  border: 1px solid var(--glass-border);
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  gap: 1.5rem;
+}
+
+.chartHeader {
+  display: flex;
+  gap: 0.75rem;
+  align-items: center;
+}
+
+.chartIcon {
+  color: var(--accent);
+}
+
+.chartHeader h3 {
+  font-family: var(--font-sans);
+  font-weight: 800;
+  font-size: var(--font-size-md);
+  color: var(--primary);
+  line-height: 1.2;
+}
+
+.chartHeader span {
+  font-size: 0.75rem;
+  color: var(--text-tertiary);
+  font-weight: 500;
+}
+
+.chartContainer {
+  height: 200px;
+  width: 100%;
+  display: flex;
+  align-items: center;
+}
+
+.chartSvg {
+  overflow: visible;
+  width: 100%;
+  height: 100%;
+}
+
+.axisLabel {
+  font-size: 8px;
+  font-weight: 600;
+  fill: var(--text-tertiary);
+}
+
+.valueLabel {
+  font-size: 9px;
+  font-weight: 700;
+  fill: var(--primary);
+}
+
+[data-theme="dark"] .valueLabel {
+  fill: var(--text-primary);
+}
+
+.chartFooter {
+  display: flex;
+  justify-content: space-between;
+  border-top: 1px solid var(--border-light);
+  padding-top: 1rem;
+  flex-wrap: wrap;
+  gap: 1rem;
+}
+
+.footerMetric {
+  display: flex;
+  align-items: center;
+  gap: 0.4rem;
+  font-size: 0.7rem;
+  color: var(--text-tertiary);
+  font-weight: 600;
+}
+
+@media (max-width: 768px) {
+  .panelGrid {
+    grid-template-columns: 1fr;
+    gap: 1.5rem;
+  }
+}

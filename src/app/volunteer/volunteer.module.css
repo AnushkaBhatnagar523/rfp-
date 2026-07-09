@@ -1,0 +1,167 @@
+.page {
+  width: 100%;
+}
+
+.hero {
+  background: linear-gradient(135deg, rgba(5, 20, 36, 0.95), rgba(19, 76, 116, 0.88));
+  color: white;
+  padding: 8rem 0 6rem;
+}
+
+.heroContent {
+  max-width: 760px;
+}
+
+.eyebrow,
+.sectionLabel {
+  display: inline-block;
+  font-size: var(--font-size-xs);
+  font-weight: 800;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+  color: var(--accent);
+  margin-bottom: 1rem;
+}
+
+.hero h1 {
+  font-size: clamp(2.1rem, 1.7rem + 2.3vw, 3.2rem);
+  color: white;
+  margin-bottom: 1rem;
+}
+
+.hero p {
+  color: rgba(255, 255, 255, 0.8);
+  font-size: var(--font-size-lg);
+}
+
+.heroActions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 1rem;
+  margin-top: 2rem;
+}
+
+.infoSection,
+.formSection {
+  padding: 4rem 0;
+}
+
+.infoGrid {
+  display: grid;
+  grid-template-columns: 1.1fr 0.9fr;
+  gap: 2rem;
+  align-items: start;
+}
+
+.infoGrid h2 {
+  font-size: var(--font-size-3xl);
+  margin-bottom: 1rem;
+}
+
+.list {
+  list-style: none;
+  display: flex;
+  flex-direction: column;
+  gap: 0.85rem;
+  padding: 0;
+  margin-top: 1.5rem;
+}
+
+.list li {
+  display: flex;
+  gap: 0.7rem;
+  color: var(--text-secondary);
+}
+
+.panel {
+  padding: 2rem;
+  border-radius: var(--radius-xl);
+  display: flex;
+  flex-direction: column;
+  gap: 0.8rem;
+}
+
+.panel h3 {
+  font-size: var(--font-size-xl);
+}
+
+.contactList {
+  display: flex;
+  flex-direction: column;
+  gap: 0.6rem;
+  margin-top: 0.5rem;
+  color: var(--text-secondary);
+}
+
+.contactList span {
+  display: flex;
+  align-items: center;
+  gap: 0.6rem;
+}
+
+.formCard {
+  padding: 2rem;
+  border-radius: var(--radius-xl);
+}
+
+.formHeader {
+  margin-bottom: 1.5rem;
+}
+
+.form {
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+}
+
+.formRow {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 1rem;
+}
+
+.form label {
+  display: flex;
+  flex-direction: column;
+  gap: 0.45rem;
+  color: var(--text-secondary);
+}
+
+.form input,
+.form select,
+.form textarea {
+  border: 1px solid var(--border-light);
+  border-radius: var(--radius-md);
+  padding: 0.85rem 1rem;
+  font: inherit;
+  background-color: var(--bg-primary);
+  color: var(--text-primary);
+}
+
+.checkboxLabel {
+  flex-direction: row;
+  align-items: flex-start;
+  gap: 0.7rem;
+}
+
+.checkboxLabel input {
+  margin-top: 0.2rem;
+}
+
+.successState {
+  display: flex;
+  flex-direction: column;
+  gap: 0.9rem;
+  align-items: flex-start;
+}
+
+.successIcon {
+  color: var(--success);
+}
+
+@media (max-width: 900px) {
+  .infoGrid,
+  .formRow {
+    grid-template-columns: 1fr;
+  }
+}

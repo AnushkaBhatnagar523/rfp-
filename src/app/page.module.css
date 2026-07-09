@@ -1,0 +1,574 @@
+.homeContainer {
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+}
+
+/* 1. Hero Section */
+.hero {
+  position: relative;
+  height: calc(100vh - var(--header-height));
+  min-height: 550px;
+  display: flex;
+  align-items: center;
+  overflow: hidden;
+  color: white;
+}
+
+.heroBg {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  z-index: 1;
+}
+
+.heroImage {
+  object-fit: cover;
+  object-position: center;
+}
+
+.heroOverlay {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: linear-gradient(135deg, rgba(10, 37, 64, 0.9) 0%, rgba(5, 20, 36, 0.5) 100%);
+  z-index: 2;
+}
+
+.heroContent {
+  position: relative;
+  z-index: 10;
+  display: flex;
+  flex-direction: column;
+  gap: 1.5rem;
+  max-width: 800px;
+}
+
+.heroTag {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+  background-color: var(--accent);
+  color: white;
+  padding: 0.4rem 0.8rem;
+  border-radius: var(--radius-full);
+  font-size: var(--font-size-xs);
+  font-weight: 700;
+  text-transform: uppercase;
+  width: max-content;
+  box-shadow: 0 4px 10px rgba(241, 90, 36, 0.3);
+}
+
+.hero h1 {
+  font-family: var(--font-serif);
+  font-size: clamp(2.25rem, 1.8rem + 3vw, 4rem);
+  font-weight: 800;
+  color: white;
+  line-height: 1.15;
+}
+
+.hero p {
+  font-size: var(--font-size-md);
+  color: rgba(255, 255, 255, 0.85);
+  line-height: 1.6;
+  margin-bottom: 1rem;
+}
+
+.heroActions {
+  display: flex;
+  gap: 1rem;
+  flex-wrap: wrap;
+}
+
+/* 2. Impact Numbers Section */
+.impactNumbers {
+  background-color: var(--primary);
+  padding: 3.5rem 0;
+  color: white;
+  position: relative;
+  z-index: 20;
+}
+
+.impactGrid {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 2rem;
+  text-align: center;
+}
+
+.impactCard {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+}
+
+.number {
+  font-family: var(--font-sans);
+  font-size: clamp(2.25rem, 1.8rem + 2vw, 3.5rem);
+  font-weight: 900;
+  color: var(--accent);
+  line-height: 1;
+}
+
+.label {
+  font-size: var(--font-size-sm);
+  font-weight: 600;
+  color: rgba(255, 255, 255, 0.7);
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+}
+
+/* 3. Programs Grid Section */
+.programsSection {
+  padding: 6rem 0;
+  background-color: var(--bg-secondary);
+}
+
+.sectionHeader {
+  text-align: center;
+  max-width: 700px;
+  margin: 0 auto 4rem auto;
+}
+
+.sectionSubtitle {
+  font-size: var(--font-size-xs);
+  font-weight: 800;
+  color: var(--accent);
+  text-transform: uppercase;
+  letter-spacing: 1.5px;
+  display: block;
+  margin-bottom: 0.5rem;
+}
+
+.sectionHeader h2 {
+  font-family: var(--font-serif);
+  font-size: var(--font-size-3xl);
+  color: var(--primary);
+  margin-bottom: 1rem;
+}
+
+.sectionHeader p {
+  color: var(--text-secondary);
+  font-size: var(--font-size-md);
+  line-height: 1.6;
+}
+
+.programsGrid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 2.25rem;
+}
+
+.programCard {
+  border-radius: var(--radius-lg);
+  border: 1px solid var(--border-light);
+  overflow: hidden;
+  background-color: var(--bg-primary);
+  display: flex;
+  flex-direction: column;
+}
+
+.progImageWrapper {
+  position: relative;
+  height: 200px;
+  width: 100%;
+  overflow: hidden;
+}
+
+.progImage {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  transition: transform var(--transition-slow);
+}
+
+.programCard:hover .progImage {
+  transform: scale(1.08);
+}
+
+.progIcon {
+  position: absolute;
+  bottom: 1rem;
+  left: 1rem;
+  background-color: var(--bg-primary);
+  width: 45px;
+  height: 45px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 1.25rem;
+  box-shadow: var(--shadow-md);
+  z-index: 10;
+}
+
+.progContent {
+  padding: 1.75rem;
+  display: flex;
+  flex-direction: column;
+  gap: 0.75rem;
+  flex: 1;
+}
+
+.progContent h3 {
+  font-family: var(--font-sans);
+  font-weight: 800;
+  font-size: var(--font-size-lg);
+  color: var(--primary);
+}
+
+.progContent p {
+  font-size: var(--font-size-sm);
+  color: var(--text-secondary);
+  line-height: 1.5;
+  margin: 0;
+}
+
+.readMoreLink {
+  display: flex;
+  align-items: center;
+  gap: 0.4rem;
+  font-weight: 700;
+  font-size: var(--font-size-xs);
+  color: var(--accent);
+  margin-top: auto;
+  padding-top: 0.5rem;
+}
+
+.readMoreLink:hover {
+  color: var(--accent-hover);
+}
+
+/* 4. Map & 5. Dashboard Spacers */
+.mapSection {
+  padding: 6rem 0 3rem 0;
+  background-color: var(--bg-primary);
+}
+
+.dashboardSection {
+  padding: 3rem 0 6rem 0;
+  background-color: var(--bg-primary);
+}
+
+/* 6. Success Video Section */
+.videoSection {
+  position: relative;
+  height: 450px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: white;
+  text-align: center;
+  overflow: hidden;
+}
+
+.videoBg {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  z-index: 1;
+}
+
+.videoBgImage {
+  object-fit: cover;
+  object-position: center;
+}
+
+.videoOverlay {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-color: rgba(5, 20, 36, 0.75);
+  z-index: 2;
+}
+
+.videoContent {
+  position: relative;
+  z-index: 10;
+  max-width: 750px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 1.25rem;
+}
+
+.playButton {
+  width: 80px;
+  height: 80px;
+  border-radius: 50%;
+  background-color: white;
+  border: none;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.3);
+  transition: transform var(--transition-fast), background-color var(--transition-fast);
+  margin-bottom: 1rem;
+}
+
+.playButton:hover {
+  transform: scale(1.1);
+  background-color: var(--accent-light);
+}
+
+.videoContent h2 {
+  font-family: var(--font-serif);
+  font-size: var(--font-size-2xl);
+  color: white;
+}
+
+.videoContent p {
+  font-size: var(--font-size-sm);
+  color: rgba(255, 255, 255, 0.8);
+  line-height: 1.6;
+  margin: 0;
+}
+
+.videoPlayerContainer {
+  width: 100%;
+  border-radius: var(--radius-md);
+  overflow: hidden;
+  box-shadow: var(--shadow-xl);
+}
+
+/* 7. Testimonials Section */
+.testimonialsSection {
+  padding: 6rem 0;
+  background-color: var(--bg-secondary);
+}
+
+.testimonialWrapper {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 2rem;
+  max-width: 850px;
+  margin: 0 auto;
+}
+
+.arrowBtn {
+  background-color: var(--bg-primary);
+  border: 1px solid var(--border-light);
+  color: var(--text-primary);
+  width: 50px;
+  height: 50px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  transition: all var(--transition-fast);
+  flex-shrink: 0;
+  box-shadow: var(--shadow-sm);
+}
+
+.arrowBtn:hover {
+  background-color: var(--accent);
+  color: white;
+  border-color: var(--accent);
+  transform: scale(1.05);
+}
+
+.testimonialCard {
+  flex: 1;
+  padding: 3rem;
+  border-radius: var(--radius-xl);
+  box-shadow: var(--glass-shadow);
+  border: 1px solid var(--glass-border);
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  gap: 1.5rem;
+  min-height: 320px;
+}
+
+.quoteMark {
+  font-family: var(--font-serif);
+  font-size: 5rem;
+  color: var(--accent);
+  line-height: 1;
+  height: 40px;
+  position: absolute;
+  top: 1rem;
+  left: 1.5rem;
+  opacity: 0.15;
+}
+
+.quoteText {
+  font-family: var(--font-serif);
+  font-size: var(--font-size-md);
+  color: var(--text-primary);
+  line-height: 1.7;
+  font-style: italic;
+  position: relative;
+  z-index: 10;
+  margin: 0;
+}
+
+.profile {
+  display: flex;
+  align-items: center;
+  gap: 1.25rem;
+  margin-top: auto;
+}
+
+.avatar {
+  width: 60px;
+  height: 60px;
+  border-radius: 50%;
+  object-fit: cover;
+  border: 2px solid var(--accent);
+}
+
+.profileInfo {
+  display: flex;
+  flex-direction: column;
+}
+
+.name {
+  font-weight: 700;
+  color: var(--primary);
+  font-style: normal;
+  font-size: var(--font-size-sm);
+}
+
+[data-theme="dark"] .name {
+  color: var(--text-primary);
+}
+
+.designation {
+  font-size: var(--font-size-xs);
+  color: var(--text-secondary);
+  font-weight: 600;
+}
+
+.location {
+  font-size: 0.7rem;
+  color: var(--text-tertiary);
+  font-weight: 500;
+}
+
+/* 8. CSR Partnerships & Annual Reports */
+.partnershipSection {
+  padding: 6rem 0;
+  background-color: var(--bg-primary);
+}
+
+.splitGrid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 3rem;
+}
+
+.splitCard {
+  padding: 3.5rem 3rem;
+  border-radius: var(--radius-xl);
+  box-shadow: var(--glass-shadow);
+  border: 1px solid var(--glass-border);
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 1.25rem;
+  transition: transform var(--transition-normal);
+}
+
+.splitCard:hover {
+  transform: translateY(-5px);
+}
+
+.splitIcon {
+  color: var(--accent);
+}
+
+.splitCard h3 {
+  font-family: var(--font-serif);
+  font-size: var(--font-size-xl);
+  color: var(--primary);
+}
+
+.splitCard p {
+  font-size: var(--font-size-sm);
+  color: var(--text-secondary);
+  line-height: 1.6;
+  margin: 0;
+}
+
+/* Update Cards */
+.updateGrid {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 1.5rem;
+  margin-top: 2rem;
+}
+
+.updateCard {
+  padding: 1.75rem;
+  border-radius: var(--radius-lg);
+  display: flex;
+  flex-direction: column;
+  gap: 0.75rem;
+}
+
+.updateCard h3 {
+  font-size: var(--font-size-lg);
+  color: var(--primary);
+}
+
+.updateCard p {
+  font-size: var(--font-size-sm);
+  color: var(--text-secondary);
+  margin: 0;
+}
+
+/* Responsiveness */
+@media (max-width: 1024px) {
+  .programsGrid {
+    grid-template-columns: repeat(2, 1fr);
+  }
+  .updateGrid {
+    grid-template-columns: 1fr;
+  }
+}
+
+@media (max-width: 768px) {
+  .impactGrid {
+    grid-template-columns: repeat(2, 1fr);
+    gap: 1.5rem;
+  }
+  .programsGrid {
+    grid-template-columns: 1fr;
+    gap: 1.5rem;
+  }
+  .splitGrid {
+    grid-template-columns: 1fr;
+    gap: 1.5rem;
+  }
+  .splitCard {
+    padding: 2rem;
+  }
+  .testimonialWrapper {
+    gap: 1rem;
+  }
+  .testimonialCard {
+    padding: 2rem;
+  }
+}
+
+@media (max-width: 480px) {
+  .impactGrid {
+    grid-template-columns: 1fr;
+  }
+  .arrowBtn {
+    width: 40px;
+    height: 40px;
+  }
+}

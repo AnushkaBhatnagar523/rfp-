@@ -1,0 +1,115 @@
+.wrapper {
+  width: 100%;
+  min-height: 80vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 5rem 1.5rem;
+  background: radial-gradient(circle at 50% 20%, rgba(241, 90, 36, 0.05) 0%, transparent 60%),
+              var(--bg-primary);
+}
+
+.container {
+  max-width: 700px;
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 1.5rem;
+  text-align: center;
+}
+
+.errorCode {
+  font-family: var(--font-sans);
+  font-size: clamp(6rem, 15vw, 10rem);
+  font-weight: 900;
+  line-height: 1;
+  background: linear-gradient(135deg, var(--primary), var(--accent));
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+  letter-spacing: -4px;
+  opacity: 0.8;
+}
+
+.iconRing {
+  width: 80px;
+  height: 80px;
+  border-radius: 50%;
+  background-color: var(--accent-light);
+  border: 2px solid var(--accent);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: var(--accent);
+}
+
+.heading {
+  font-family: var(--font-serif);
+  font-size: var(--font-size-2xl);
+  color: var(--primary);
+  margin: 0;
+}
+
+.subtext {
+  font-size: var(--font-size-sm);
+  color: var(--text-secondary);
+  line-height: 1.6;
+  max-width: 500px;
+  margin: 0;
+}
+
+/* Quick link cards */
+.suggestionsGrid {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 1rem;
+  width: 100%;
+  max-width: 600px;
+  margin-top: 1rem;
+}
+
+.suggestion {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+  padding: 1.25rem 1.5rem;
+  border-radius: var(--radius-lg);
+  border: 1px solid var(--border-light);
+  text-align: left;
+}
+
+.suggestion h3 {
+  font-family: var(--font-sans);
+  font-weight: 800;
+  font-size: var(--font-size-xs);
+  color: var(--primary);
+  margin: 0 0 0.15rem 0;
+}
+
+.suggestion p {
+  font-size: 0.7rem;
+  color: var(--text-secondary);
+  margin: 0;
+}
+
+.suggestionIcon {
+  font-size: 1.5rem;
+  flex-shrink: 0;
+}
+
+.suggestionArrow {
+  color: var(--text-tertiary);
+  margin-left: auto;
+  flex-shrink: 0;
+}
+
+.suggestion:hover .suggestionArrow {
+  color: var(--accent);
+}
+
+@media (max-width: 480px) {
+  .suggestionsGrid {
+    grid-template-columns: 1fr;
+  }
+}

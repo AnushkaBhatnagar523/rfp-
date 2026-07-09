@@ -1,0 +1,83 @@
+.accordionContainer {
+  display: flex;
+  flex-direction: column;
+  gap: 0.75rem;
+  width: 100%;
+}
+
+.accordionItem {
+  border-radius: var(--radius-md);
+  border: 1px solid var(--border-light);
+  overflow: hidden;
+  transition: all var(--transition-normal);
+}
+
+.accordionItem.open {
+  border-color: var(--accent);
+  box-shadow: var(--shadow-sm);
+}
+
+.headerButton {
+  width: 100%;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 1.25rem 1.5rem;
+  background: transparent;
+  border: none;
+  cursor: pointer;
+  text-align: left;
+  gap: 1rem;
+}
+
+.titleText {
+  font-family: var(--font-sans);
+  font-weight: 700;
+  font-size: var(--font-size-md);
+  color: var(--text-primary);
+  transition: color var(--transition-fast);
+}
+
+.accordionItem:hover .titleText {
+  color: var(--accent);
+}
+
+.chevron {
+  color: var(--text-secondary);
+  transition: transform var(--transition-normal), color var(--transition-fast);
+  flex-shrink: 0;
+}
+
+.accordionItem:hover .chevron {
+  color: var(--accent);
+}
+
+.chevron.rotated {
+  transform: rotate(180deg);
+  color: var(--accent);
+}
+
+.contentWrapper {
+  max-height: 0;
+  overflow: hidden;
+  transition: max-height 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.contentOpen {
+  max-height: 1000px; /* Large enough fallback for text */
+}
+
+.contentInner {
+  padding: 0 1.5rem 1.5rem 1.5rem;
+  font-size: var(--font-size-sm);
+  color: var(--text-secondary);
+  line-height: 1.6;
+}
+
+.contentInner p {
+  margin-bottom: 0.75rem;
+}
+
+.contentInner p:last-child {
+  margin-bottom: 0;
+}

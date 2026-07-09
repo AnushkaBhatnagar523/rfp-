@@ -1,0 +1,475 @@
+.careersWrapper {
+  width: 100%;
+}
+
+.careersHero {
+  position: relative;
+  background-color: var(--primary);
+  color: white;
+  padding: 4.5rem 0;
+  overflow: hidden;
+}
+
+.careersHeroBg {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: radial-gradient(circle at 80% 80%, rgba(0, 113, 188, 0.1) 0%, transparent 40%),
+              linear-gradient(135deg, #051424 0%, #0c2340 100%);
+  z-index: 1;
+}
+
+.careersHeroContent {
+  position: relative;
+  z-index: 10;
+  max-width: 800px;
+  display: flex;
+  flex-direction: column;
+  gap: 0.75rem;
+}
+
+.sub {
+  font-size: var(--font-size-xs);
+  font-weight: 800;
+  color: var(--accent);
+  text-transform: uppercase;
+  letter-spacing: 1.5px;
+}
+
+.careersHeroContent h1 {
+  font-family: var(--font-serif);
+  font-size: var(--font-size-3xl);
+  color: white;
+  margin-bottom: 0.5rem;
+}
+
+.careersHeroContent p {
+  font-size: var(--font-size-sm);
+  color: rgba(255, 255, 255, 0.8);
+  margin: 0;
+  line-height: 1.5;
+}
+
+/* Value Pitch Grid */
+.valueGrid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 2rem;
+  margin-bottom: 5rem;
+}
+
+/* Toolbar */
+.toolbar {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 3rem;
+  flex-wrap: wrap;
+  gap: 1.5rem;
+}
+
+.departments {
+  display: flex;
+  gap: 0.75rem;
+  flex-wrap: wrap;
+}
+
+.deptBtn {
+  background-color: var(--bg-secondary);
+  border: 1px solid var(--border-light);
+  color: var(--text-secondary);
+  padding: 0.5rem 1rem;
+  border-radius: var(--radius-full);
+  font-weight: 600;
+  font-size: var(--font-size-xs);
+  cursor: pointer;
+  transition: all var(--transition-fast);
+}
+
+.deptBtn:hover {
+  background-color: var(--border-light);
+  color: var(--text-primary);
+}
+
+.deptBtn.activeDept {
+  background-color: var(--primary);
+  color: white;
+  border-color: var(--primary);
+}
+
+.searchBar {
+  display: flex;
+  align-items: center;
+  border: 1px solid var(--border-light);
+  border-radius: var(--radius-md);
+  padding: 0.5rem 1rem;
+  background-color: var(--bg-primary);
+  width: 100%;
+  max-width: 300px;
+}
+
+.searchIcon {
+  color: var(--text-tertiary);
+  margin-right: 0.5rem;
+}
+
+.searchInput {
+  border: none;
+  background: transparent;
+  width: 100%;
+  outline: none;
+  font-family: var(--font-sans);
+  font-size: var(--font-size-xs);
+  color: var(--text-primary);
+}
+
+/* Jobs List */
+.jobsList {
+  display: flex;
+  flex-direction: column;
+  gap: 1.5rem;
+}
+
+.jobCard {
+  border-radius: var(--radius-lg);
+  border: 1px solid var(--border-light);
+  padding: 2rem;
+  background-color: var(--bg-primary);
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 2rem;
+}
+
+.jobInfo {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+  flex: 1;
+}
+
+.deptBadge {
+  font-size: 0.65rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  color: var(--accent);
+  background-color: var(--accent-light);
+  padding: 0.2rem 0.5rem;
+  border-radius: var(--radius-sm);
+  width: max-content;
+}
+
+.jobCard h3 {
+  font-family: var(--font-sans);
+  font-weight: 800;
+  font-size: var(--font-size-md);
+  color: var(--primary);
+  margin: 0;
+}
+
+.jobCard p {
+  font-size: var(--font-size-sm);
+  color: var(--text-secondary);
+  line-height: 1.5;
+  margin: 0;
+}
+
+.jobMeta {
+  display: flex;
+  gap: 1.5rem;
+  font-size: var(--font-size-xs);
+  color: var(--text-tertiary);
+  font-weight: 600;
+}
+
+.metaItem {
+  display: flex;
+  align-items: center;
+  gap: 0.25rem;
+}
+
+/* No results state */
+.noResults {
+  text-align: center;
+  padding: 5rem 0;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 0.75rem;
+}
+
+.noResultsIcon {
+  color: var(--text-tertiary);
+}
+
+.noResults h3 {
+  font-family: var(--font-sans);
+  font-size: var(--font-size-md);
+  color: var(--primary);
+}
+
+.noResults p {
+  font-size: var(--font-size-xs);
+  color: var(--text-secondary);
+  max-width: 350px;
+  margin: 0;
+}
+
+/* Details Subpage styling */
+.detailsWrapper {
+  width: 100%;
+}
+
+.backBtn {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+  font-size: var(--font-size-xs);
+  font-weight: 700;
+  color: var(--text-secondary);
+  margin-bottom: 2rem;
+  transition: color var(--transition-fast);
+}
+
+.backBtn:hover {
+  color: var(--accent);
+}
+
+.detailsCat {
+  font-size: var(--font-size-xs);
+  font-weight: 800;
+  color: var(--accent);
+  text-transform: uppercase;
+  letter-spacing: 1px;
+}
+
+.detailsTitle {
+  font-family: var(--font-serif);
+  font-size: clamp(1.75rem, 1.5rem + 1vw, 2.5rem);
+  color: var(--primary);
+  margin: 0.5rem 0 1rem 0;
+  line-height: 1.25;
+}
+
+.detailsMeta {
+  display: flex;
+  gap: 1.5rem;
+  font-size: var(--font-size-xs);
+  color: var(--text-secondary);
+  border-bottom: 1px solid var(--border-light);
+  padding-bottom: 1.5rem;
+  margin-bottom: 2.5rem;
+}
+
+.detailsGrid {
+  display: grid;
+  grid-template-columns: 1.3fr 0.7fr;
+  gap: 3rem;
+}
+
+.jobSpecColumn {
+  display: flex;
+  flex-direction: column;
+  gap: 2rem;
+}
+
+.specSection h3 {
+  font-family: var(--font-sans);
+  font-size: var(--font-size-md);
+  color: var(--primary);
+  font-weight: 800;
+  margin-bottom: 1rem;
+}
+
+.specSection ul {
+  list-style: none;
+  display: flex;
+  flex-direction: column;
+  gap: 0.75rem;
+}
+
+.specSection li {
+  font-size: var(--font-size-sm);
+  color: var(--text-secondary);
+  position: relative;
+  padding-left: 1.25rem;
+  line-height: 1.6;
+}
+
+.specSection li::before {
+  content: '▪';
+  position: absolute;
+  left: 0;
+  color: var(--accent);
+}
+
+/* Application Form Sidebar Card */
+.formColumn {
+  display: flex;
+  flex-direction: column;
+}
+
+.applicationCard {
+  padding: 2rem;
+  border-radius: var(--radius-lg);
+  box-shadow: var(--glass-shadow);
+  border: 1px solid var(--glass-border);
+}
+
+.applicationCard h3 {
+  font-family: var(--font-sans);
+  font-size: var(--font-size-md);
+  color: var(--primary);
+  font-weight: 800;
+  margin-bottom: 1.5rem;
+  border-bottom: 1px solid var(--border-light);
+  padding-bottom: 0.5rem;
+}
+
+.appForm {
+  display: flex;
+  flex-direction: column;
+  gap: 1.25rem;
+}
+
+.formGroup {
+  display: flex;
+  flex-direction: column;
+  gap: 0.4rem;
+}
+
+.formGroup label {
+  font-size: var(--font-size-xs);
+  font-weight: 700;
+  color: var(--text-primary);
+}
+
+.formInput {
+  border: 1px solid var(--border-light);
+  border-radius: var(--radius-md);
+  padding: 0.65rem 0.85rem;
+  font-family: var(--font-sans);
+  font-size: var(--font-size-xs);
+  background-color: var(--bg-primary);
+  color: var(--text-primary);
+  outline: none;
+  width: 100%;
+}
+
+.formInput:focus {
+  border-color: var(--accent);
+}
+
+/* Upload CV elements */
+.uploadBox {
+  position: relative;
+}
+
+.fileInput {
+  position: absolute;
+  width: 100%;
+  height: 100%;
+  top: 0;
+  left: 0;
+  opacity: 0;
+  cursor: pointer;
+}
+
+.uploadLabel {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.5rem;
+  border: 1.5px dashed var(--border-medium);
+  border-radius: var(--radius-md);
+  padding: 0.85rem;
+  cursor: pointer;
+  background-color: var(--bg-secondary);
+  transition: all var(--transition-fast);
+}
+
+.uploadBox:hover .uploadLabel {
+  background-color: var(--border-light);
+  border-color: var(--accent);
+}
+
+.uploadIcon {
+  color: var(--text-secondary);
+}
+
+.consentGroup {
+  display: flex;
+  gap: 0.5rem;
+  align-items: flex-start;
+}
+
+.consentCheck {
+  width: 16px;
+  height: 16px;
+  accent-color: var(--accent);
+  margin-top: 2px;
+  cursor: pointer;
+}
+
+.consentText {
+  font-size: 0.7rem;
+  color: var(--text-secondary);
+  line-height: 1.4;
+}
+
+/* Success Card Info */
+.successWrapper {
+  text-align: center;
+  padding: 2rem 0;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 1rem;
+}
+
+.successIcon {
+  color: var(--success);
+}
+
+.successWrapper h3 {
+  font-family: var(--font-sans);
+  font-size: var(--font-size-md);
+  color: var(--primary);
+  margin: 0;
+  border-bottom: none;
+  padding-bottom: 0;
+}
+
+.successWrapper p {
+  font-size: var(--font-size-xs);
+  color: var(--text-secondary);
+  line-height: 1.5;
+  margin: 0;
+}
+
+@media (max-width: 1024px) {
+  .valueGrid {
+    grid-template-columns: 1fr;
+    gap: 1rem;
+    margin-bottom: 3rem;
+  }
+  .jobCard {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 1.5rem;
+  }
+  .jobCard a {
+    width: 100%;
+  }
+  .detailsGrid {
+    grid-template-columns: 1fr;
+    gap: 2.5rem;
+  }
+  .formColumn {
+    max-width: 500px;
+    width: 100%;
+    margin: 0 auto;
+  }
+}
