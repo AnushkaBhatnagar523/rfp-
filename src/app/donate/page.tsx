@@ -1,8 +1,8 @@
 'use client';
 
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import styles from './donate.module.css';
-import { Heart, ShieldCheck, CheckCircle2, AlertTriangle, ArrowRight } from 'lucide-react';
+import { Heart, ShieldCheck, CheckCircle2, AlertTriangle, X } from 'lucide-react';
 
 export default function DonatePage() {
   const [amount, setAmount] = useState<number>(2500);
@@ -21,22 +21,153 @@ export default function DonatePage() {
   const [paymentSuccess, setPaymentSuccess] = useState(false);
   const [isProcessing, setIsProcessing] = useState(false);
 
+  // Simulation parameters
+  const [showMockCheckout, setShowMockCheckout] = useState(false);
+  const [mockOrderId, setMockOrderId] = useState('');
+  const [donationValue, setDonationValue] = useState(0);
+
   const amounts = [1000, 2500, 5000, 10000];
 
-  const handleDonateSubmit = (e: React.FormEvent) => {
+  // Dynamic injection of Razorpay Standard Web Checkout SDK
+  useEffect(() => {
+    const script = document.createElement('script');
+    script.src = 'https://checkout.razorpay.com/v1/checkout.js';
+    script.async = true;
+    document.body.appendChild(script);
+    return () => {
+      document.body.removeChild(script);
+    };
+  }, []);
+
+  const handleDonateSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    const donationValue = customAmount ? parseFloat(customAmount) : amount;
-    if (!donationValue || donationValue <= 0) {
+    const finalAmount = customAmount ? parseFloat(customAmount) : amount;
+    if (!finalAmount || finalAmount <= 0) {
       alert("Please enter a valid donation amount.");
       return;
     }
 
     setIsProcessing(true);
-    // Simulate Razorpay checkout loading
-    setTimeout(() => {
+    setDonationValue(finalAmount);
+
+    try {
+      const payload = {
+        amount: finalAmount,
+        currency: 'INR',
+        donorName: donorData.name,
+        donorEmail: donorData.email,
+        donorPhone: donorData.phone,
+        panOrPassport: citizenship === 'indian' ? donorData.pan : donorData.passport,
+        project,
+        citizenship
+      };
+
+      const res = await fetch('/api/donate/order', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json'
+        },
+        body: JSON.stringify(payload)
+      });
+
+      if (!res.ok) {
+        const errData = await res.json();
+        alert(errData.error || 'Failed to initialize donation order');
+        setIsProcessing(false);
+        return;
+      }
+
+      const orderData = await res.json();
+
+      if (orderData.isMock) {
+        // Launch Simulated Checkout UI Overlay
+        setMockOrderId(orderData.orderId);
+        setShowMockCheckout(true);
+        setIsProcessing(false);
+      } else {
+        // Launch standard Razorpay SDK modal
+        const options = {
+          key: orderData.keyId,
+          amount: Math.round(finalAmount * 100),
+          currency: 'INR',
+          name: 'The Hans Foundation',
+          description: `Donation support for: ${project}`,
+          order_id: orderData.orderId,
+          handler: async function (response: any) {
+            setIsProcessing(true);
+            const verifyRes = await fetch('/api/donate/verify', {
+              method: 'POST',
+              headers: { 'Content-Type': 'application/json' },
+              body: JSON.stringify({
+                razorpay_order_id: response.razorpay_order_id,
+                razorpay_payment_id: response.razorpay_payment_id,
+                razorpay_signature: response.razorpay_signature
+              })
+            });
+
+            if (verifyRes.ok) {
+              setPaymentSuccess(true);
+            } else {
+              alert('Payment verification failed.');
+            }
+            setIsProcessing(false);
+          },
+          prefill: {
+            name: donorData.name,
+            email: donorData.email,
+            contact: donorData.phone
+          },
+          theme: {
+            color: '#0a2540'
+          }
+        };
+
+        const rzp = new (window as any).Razorpay(options);
+        rzp.open();
+        setIsProcessing(false);
+      }
+    } catch (err) {
+      console.error('Donation error:', err);
+      alert('A network error occurred.');
       setIsProcessing(false);
-      setPaymentSuccess(true);
-    }, 2000);
+    }
+  };
+
+  const handleSimulatePayment = async (success: boolean) => {
+    setShowMockCheckout(false);
+    if (!success) {
+      alert("Simulated transaction cancelled/failed.");
+      return;
+    }
+
+    setIsProcessing(true);
+    try {
+      const mockPaymentId = `pay_sim_${Math.random().toString(36).substring(2, 11)}`;
+      const mockSignature = `sig_sim_${Math.random().toString(36).substring(2, 11)}`;
+
+      const verifyRes = await fetch('/api/donate/verify', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json'
+        },
+        body: JSON.stringify({
+          razorpay_order_id: mockOrderId,
+          razorpay_payment_id: mockPaymentId,
+          razorpay_signature: mockSignature
+        })
+      });
+
+      if (verifyRes.ok) {
+        setPaymentSuccess(true);
+      } else {
+        alert("Simulated receipt verification failed.");
+      }
+    } catch (err) {
+      console.error(err);
+      alert("Verification error.");
+    } finally {
+      setIsProcessing(false);
+    }
   };
 
   return (
@@ -92,7 +223,7 @@ export default function DonatePage() {
                 <div className={styles.successWrapper}>
                   <CheckCircle2 size={56} className={styles.successIcon} />
                   <h3>Donation Successful!</h3>
-                  <p>Thank you for your generous support of ₹{(customAmount ? parseFloat(customAmount) : amount).toLocaleString('en-IN')}. A tax-deductible receipt has been sent to your registered email address.</p>
+                  <p>Thank you for your generous support of ₹{donationValue.toLocaleString('en-IN')}. A tax-deductible receipt has been sent to your registered email address.</p>
                   <button 
                     onClick={() => { setPaymentSuccess(false); setCustomAmount(''); }} 
                     className="btn btn-primary btn-sm"
@@ -259,6 +390,46 @@ export default function DonatePage() {
 
         </div>
       </div>
+
+      {/* Simulated Checkout Popup Modal */}
+      {showMockCheckout && (
+        <div className={styles.overlay}>
+          <div className={styles.checkoutBox}>
+            <div className={styles.checkoutHeader}>
+              <button className={styles.checkoutClose} onClick={() => handleSimulatePayment(false)}>
+                <X size={18} />
+              </button>
+              <h2>Razorpay Checkout (Simulated)</h2>
+              <p>Order ID: {mockOrderId}</p>
+            </div>
+            
+            <div className={styles.checkoutBody}>
+              <div className={styles.summaryRow}>
+                <span>Support Program:</span>
+                <strong>{project.toUpperCase()}</strong>
+              </div>
+              <div className={styles.summaryRow}>
+                <span>Amount to pay:</span>
+                <strong>₹{donationValue.toLocaleString('en-IN')}</strong>
+              </div>
+              
+              <p style={{ fontSize: '0.8rem', color: 'var(--text-secondary)', margin: 0, textAlign: 'center', lineHeight: 1.4 }}>
+                This is a secure local simulation of the Razorpay domestic payment gateway gateway checking Section 80G tax inputs.
+              </p>
+              
+              <div className={styles.simOptions}>
+                <button className={`${styles.simBtn} ${styles.simSuccess}`} onClick={() => handleSimulatePayment(true)}>
+                  <span>Simulate Payment Success</span>
+                </button>
+                <button className={`${styles.simBtn} ${styles.simFailure}`} onClick={() => handleSimulatePayment(false)}>
+                  <span>Cancel / Fail Payment</span>
+                </button>
+              </div>
+            </div>
+          </div>
+        </div>
+      )}
     </div>
   );
 }
+export const dynamic = 'force-dynamic';

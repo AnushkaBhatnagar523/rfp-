@@ -32,7 +32,7 @@ export default function ContactPage() {
     setFormData(prev => ({ ...prev, consent: e.target.checked }));
   };
 
-  const handleSubmit = (e: React.FormEvent) => {
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     if (formData.captcha.trim() !== mathAnswer) {
       alert("Spam check failed. Please answer the security math question correctly.");
@@ -42,19 +42,52 @@ export default function ContactPage() {
       alert("Please agree to our privacy data storage policy.");
       return;
     }
-    setSubmitted(true);
-    // Reset fields
-    setFormData({
-      name: '',
-      email: '',
-      phone: '',
-      subject: '',
-      message: '',
-      company: '',
-      skills: '',
-      captcha: '',
-      consent: false,
-    });
+
+    try {
+      const payload = {
+        name: formData.name,
+        email: formData.email,
+        phone: formData.phone,
+        formType: activeForm,
+        captcha: formData.captcha,
+        consent: formData.consent,
+        subject: formData.subject,
+        company: formData.company,
+        skills: formData.skills,
+        message: formData.message,
+      };
+
+      const res = await fetch('/api/contact', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify(payload),
+      });
+
+      if (!res.ok) {
+        const errData = await res.json();
+        alert(errData.error || 'Failed to submit message.');
+        return;
+      }
+
+      setSubmitted(true);
+      // Reset fields
+      setFormData({
+        name: '',
+        email: '',
+        phone: '',
+        subject: '',
+        message: '',
+        company: '',
+        skills: '',
+        captcha: '',
+        consent: false,
+      });
+    } catch (err) {
+      console.error('Contact submission error:', err);
+      alert('A network error occurred. Please try again.');
+    }
   };
 
   return (

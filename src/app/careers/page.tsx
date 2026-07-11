@@ -1,6 +1,6 @@
 'use client';
 
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import Link from 'next/link';
 import styles from './careers.module.css';
 import { Briefcase, MapPin, Calendar, Search, ArrowRight, ShieldCheck } from 'lucide-react';
@@ -15,57 +15,28 @@ interface JobListing {
   description: string;
 }
 
-const allJobs: JobListing[] = [
-  {
-    slug: 'program-manager-healthcare',
-    title: 'Program Manager — Healthcare Services',
-    department: 'Healthcare',
-    location: 'Dehradun, Uttarakhand',
-    experience: '5+ Years',
-    type: 'Full-Time',
-    description: 'Lead the operations of 15+ Mobile Medical Units and coordinate clinical dialysis centers partnerships in Uttarakhand.',
-  },
-  {
-    slug: 'field-coordinator-education',
-    title: 'Field Coordinator — Primary Education',
-    department: 'Education',
-    location: 'Ranchi, Jharkhand',
-    experience: '2+ Years',
-    type: 'Full-Time',
-    description: 'Oversee school infrastructure upgrades and coordinate with local community leaders and smart classroom trainers.',
-  },
-  {
-    slug: 'senior-analyst-grant-management',
-    title: 'Senior Analyst — Grant Management',
-    department: 'Finance & Operations',
-    location: 'New Delhi (HQ)',
-    experience: '4+ Years',
-    type: 'Full-Time',
-    description: 'Review NGO grant applications, manage fund allocations tracking, and coordinate Ernst & Young financial audits compliance.',
-  },
-  {
-    slug: 'livelihoods-expert',
-    title: 'Vocational Livelihood Expert',
-    department: 'Livelihoods',
-    location: 'Alwar, Rajasthan',
-    experience: '3+ Years',
-    type: 'Full-Time',
-    description: 'Provide technical assistance and small business training models to rural women self-help groups (SHGs).',
-  },
-];
-
 export default function CareersListing() {
   const [selectedDept, setSelectedDept] = useState('All');
   const [searchQuery, setSearchQuery] = useState('');
+  const [jobs, setJobs] = useState<JobListing[]>([]);
+  const [loading, setLoading] = useState(true);
 
   const departments = ['All', 'Healthcare', 'Education', 'Livelihoods', 'Finance & Operations'];
 
-  const filteredJobs = allJobs.filter(job => {
-    const matchesDept = selectedDept === 'All' || job.department === selectedDept;
-    const matchesSearch = job.title.toLowerCase().includes(searchQuery.toLowerCase()) || 
-                          job.description.toLowerCase().includes(searchQuery.toLowerCase());
-    return matchesDept && matchesSearch;
-  });
+  useEffect(() => {
+    setLoading(true);
+    const q = searchQuery ? `&query=${encodeURIComponent(searchQuery)}` : '';
+    fetch(`/api/careers?department=${encodeURIComponent(selectedDept)}${q}`)
+      .then(res => res.json())
+      .then(data => {
+        setJobs(data);
+        setLoading(false);
+      })
+      .catch(err => {
+        console.error('Fetch jobs failed:', err);
+        setLoading(false);
+      });
+  }, [selectedDept, searchQuery]);
 
   return (
     <div className={styles.careersWrapper}>
@@ -134,9 +105,13 @@ export default function CareersListing() {
         </div>
 
         {/* Jobs List */}
-        {filteredJobs.length > 0 ? (
+        {loading ? (
+          <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'center', minHeight: '200px', color: 'var(--text-secondary)' }}>
+            <span>Loading vacancies...</span>
+          </div>
+        ) : jobs.length > 0 ? (
           <div className={styles.jobsList}>
-            {filteredJobs.map(job => (
+            {jobs.map(job => (
               <div key={job.slug} className={`${styles.jobCard} hover-lift glass`}>
                 <div className={styles.jobInfo}>
                   <span className={styles.deptBadge}>{job.department}</span>

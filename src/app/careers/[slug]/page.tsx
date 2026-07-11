@@ -1,9 +1,9 @@
 'use client';
 
-import React, { useState, use } from 'react';
+import React, { useState, useEffect, use } from 'react';
 import Link from 'next/link';
 import styles from '../careers.module.css';
-import { ArrowLeft, MapPin, Briefcase, Calendar, Upload, CheckCircle2, ShieldAlert } from 'lucide-react';
+import { ArrowLeft, MapPin, Briefcase, Calendar, Upload, CheckCircle2 } from 'lucide-react';
 
 interface JobDetailsData {
   title: string;
@@ -15,47 +15,6 @@ interface JobDetailsData {
   requirements: string[];
 }
 
-const jobsDetailsData: { [key: string]: JobDetailsData } = {
-  'program-manager-healthcare': {
-    title: 'Program Manager — Healthcare Services',
-    department: 'Healthcare',
-    location: 'Dehradun, Uttarakhand',
-    experience: '5+ Years',
-    type: 'Full-Time',
-    responsibilities: [
-      'Manage day-to-day operational schedules, fuel inventories, and clinical staffing logs of 15+ Mobile Medical Units (MMUs).',
-      'Coordinate regional partnerships with state health ministries, private specialized hospitals, and community stakeholders.',
-      'Prepare weekly and monthly output metrics sheets (beneficiaries treated, critical referrals, drug stock balances).',
-      'Perform frequent monitoring site visits to ensure adherence to clinical safety and sanitation parameters.',
-    ],
-    requirements: [
-      'Master of Public Health (MPH), MBA in Healthcare, or Master of Social Work (MSW) from a recognized university.',
-      'Minimum 5 years of active field operations experience in rural primary healthcare projects or NGO clinical management.',
-      'Excellent verbal and written communication skills in both Hindi and English.',
-      'Willingness to travel extensively across remote mountainous regions of Uttarakhand.',
-    ],
-  },
-  'field-coordinator-education': {
-    title: 'Field Coordinator — Primary Education',
-    department: 'Education',
-    location: 'Ranchi, Jharkhand',
-    experience: '2+ Years',
-    type: 'Full-Time',
-    responsibilities: [
-      'Coordinate school renovation projects, science laboratory setups, and classroom painting contracts locally.',
-      'Liaise with government school headmasters, local panchayats, and block education officers to implement smart classroom setups.',
-      'Supervise smart-board software training sessions for rural teachers and track students attendance records.',
-      'Assist local field audits and supply school bags, library books, and learning kits distributions.',
-    ],
-    requirements: [
-      'Bachelor\'s degree in Social Work (BSW), Education, or a related developmental studies discipline.',
-      'At least 2 years of on-ground experience running primary learning support or rural community coordination campaigns.',
-      'Conversant with local languages and regional development challenges in tribal areas of Jharkhand.',
-      'Candidate must possess a valid driver\'s license and a personal two-wheeler for field travel.',
-    ],
-  },
-};
-
 interface PageProps {
   params: Promise<{ slug: string }>;
 }
@@ -63,10 +22,13 @@ interface PageProps {
 export default function JobDetails({ params }: PageProps) {
   const { slug } = use(params);
   
-  const job = jobsDetailsData[slug] || jobsDetailsData['program-manager-healthcare'];
-
+  const [job, setJob] = useState<JobDetailsData | null>(null);
+  const [loading, setLoading] = useState(true);
   const [formSubmitted, setFormSubmitted] = useState(false);
+  const [submitting, setSubmitting] = useState(false);
+  
   const [resumeName, setResumeName] = useState('');
+  const [fileInput, setFileInput] = useState<File | null>(null);
   const [formData, setFormData] = useState({
     name: '',
     email: '',
@@ -74,18 +36,85 @@ export default function JobDetails({ params }: PageProps) {
     consent: false
   });
 
+  useEffect(() => {
+    const fetchJobDetails = async () => {
+      try {
+        const res = await fetch(`/api/careers/${slug}`);
+        if (res.ok) {
+          const data = await res.json();
+          setJob(data);
+        }
+        setLoading(false);
+      } catch (err) {
+        console.error('Fetch job details failed:', err);
+        setLoading(false);
+      }
+    };
+
+    fetchJobDetails();
+  }, [slug]);
+
   const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     if (e.target.files && e.target.files[0]) {
       setResumeName(e.target.files[0].name);
+      setFileInput(e.target.files[0]);
     }
   };
 
-  const handleSubmit = (e: React.FormEvent) => {
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    if (formData.consent && resumeName) {
-      setFormSubmitted(true);
+    if (!formData.consent || !fileInput) {
+      alert('Please agree to data storage and upload a CV file.');
+      return;
+    }
+
+    setSubmitting(true);
+    try {
+      const data = new FormData();
+      data.append('name', formData.name);
+      data.append('email', formData.email);
+      data.append('phone', formData.phone);
+      data.append('jobSlug', slug);
+      data.append('consent', formData.consent ? 'true' : 'false');
+      data.append('resume', fileInput);
+
+      const res = await fetch('/api/careers/apply', {
+        method: 'POST',
+        body: data,
+      });
+
+      if (res.ok) {
+        setFormSubmitted(true);
+      } else {
+        const errData = await res.json();
+        alert(errData.error || 'Failed to submit application.');
+      }
+    } catch (err) {
+      console.error('Application submit error:', err);
+      alert('A network error occurred. Please try again.');
+    } finally {
+      setSubmitting(false);
     }
   };
+
+  if (loading) {
+    return (
+      <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'center', minHeight: '60vh', color: 'var(--text-secondary)' }}>
+        <span>Loading vacancy details...</span>
+      </div>
+    );
+  }
+
+  if (!job) {
+    return (
+      <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'center', minHeight: '60vh', flexDirection: 'column', gap: '1rem' }}>
+        <h3>Job vacancy not found</h3>
+        <Link href="/careers" className="btn btn-secondary">
+          <span>Back to Open Positions</span>
+        </Link>
+      </div>
+    );
+  }
 
   return (
     <div className={styles.detailsWrapper}>
@@ -161,6 +190,7 @@ export default function JobDetails({ params }: PageProps) {
                         type="text" 
                         id="name" 
                         required 
+                        disabled={submitting}
                         className={styles.formInput} 
                         value={formData.name}
                         onChange={(e) => setFormData({...formData, name: e.target.value})}
@@ -173,6 +203,7 @@ export default function JobDetails({ params }: PageProps) {
                         type="email" 
                         id="email" 
                         required 
+                        disabled={submitting}
                         className={styles.formInput}
                         value={formData.email}
                         onChange={(e) => setFormData({...formData, email: e.target.value})}
@@ -185,6 +216,7 @@ export default function JobDetails({ params }: PageProps) {
                         type="tel" 
                         id="phone" 
                         required 
+                        disabled={submitting}
                         className={styles.formInput}
                         value={formData.phone}
                         onChange={(e) => setFormData({...formData, phone: e.target.value})}
@@ -199,6 +231,7 @@ export default function JobDetails({ params }: PageProps) {
                           id="resume-file" 
                           accept=".pdf,.docx,.doc" 
                           required 
+                          disabled={submitting}
                           className={styles.fileInput}
                           onChange={handleFileChange}
                         />
@@ -214,6 +247,7 @@ export default function JobDetails({ params }: PageProps) {
                         type="checkbox" 
                         id="consent" 
                         required
+                        disabled={submitting}
                         className={styles.consentCheck}
                         checked={formData.consent}
                         onChange={(e) => setFormData({...formData, consent: e.target.checked})}
@@ -223,8 +257,8 @@ export default function JobDetails({ params }: PageProps) {
                       </label>
                     </div>
 
-                    <button type="submit" className="btn btn-primary" style={{ width: '100%', marginTop: '0.5rem' }}>
-                      <span>Submit Application</span>
+                    <button type="submit" disabled={submitting} className="btn btn-primary" style={{ width: '100%', marginTop: '0.5rem' }}>
+                      <span>{submitting ? 'Submitting CV...' : 'Submit Application'}</span>
                     </button>
                   </form>
                 </>
@@ -237,3 +271,4 @@ export default function JobDetails({ params }: PageProps) {
     </div>
   );
 }
+export const dynamic = 'force-dynamic';

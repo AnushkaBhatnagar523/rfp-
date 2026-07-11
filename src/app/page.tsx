@@ -1,6 +1,6 @@
 'use client';
 
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import Link from 'next/link';
 import Image from 'next/image';
 import styles from './page.module.css';
@@ -17,6 +17,25 @@ import {
 export default function Home() {
   const [videoModalOpen, setVideoModalOpen] = useState(false);
   const [activeTestimonial, setActiveTestimonial] = useState(0);
+  const [dynamicStats, setDynamicStats] = useState(impactStats);
+
+  useEffect(() => {
+    fetch('/api/admin/impact')
+      .then(res => {
+        if (res.ok) return res.json();
+        throw new Error('Failed to fetch');
+      })
+      .then(data => {
+        if (Array.isArray(data) && data.length > 0) {
+          const formatted = data.map((item: any) => ({
+            value: item.value,
+            label: item.label
+          }));
+          setDynamicStats(formatted);
+        }
+      })
+      .catch(err => console.error('Error fetching impact stats:', err));
+  }, []);
 
   const nextTestimonial = () => {
     setActiveTestimonial((prev) => (prev + 1) % testimonials.length);
@@ -67,7 +86,7 @@ export default function Home() {
       <section className={styles.impactNumbers} aria-label="Key Impact Metrics">
         <div className="container">
           <div className={styles.impactGrid}>
-            {impactStats.map((stat) => (
+            {dynamicStats.map((stat) => (
               <div className={styles.impactCard} key={stat.label}>
                 <span className={styles.number}>
                   <Counter end={Number(stat.value.replace(/[^0-9]/g, ''))} duration={1500} suffix={stat.value.replace(/[0-9]/g, '')} />

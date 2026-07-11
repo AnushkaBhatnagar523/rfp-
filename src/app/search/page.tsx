@@ -1,9 +1,9 @@
 'use client';
 
-import React, { useState, use } from 'react';
+import React, { useState, useEffect, use } from 'react';
 import Link from 'next/link';
 import styles from './search.module.css';
-import { Search, Sparkles, BookOpen, Heart, ArrowRight } from 'lucide-react';
+import { Search, Sparkles, BookOpen, ArrowRight } from 'lucide-react';
 
 interface SearchResult {
   title: string;
@@ -11,19 +11,6 @@ interface SearchResult {
   url: string;
   description: string;
 }
-
-const searchableContent: SearchResult[] = [
-  { title: 'Mobile Medical Units (MMUs)', category: 'Healthcare Program', url: '/programs/health', description: 'Weekly diagnostic checkups, free consultations, and medicines delivered to doorsteps in rural mountain villages.' },
-  { title: 'Free Dialysis Renal Clinics', category: 'Healthcare Program', url: '/programs/health', description: 'Operating specialized clinical centers in partnership with state governments, offering free dialysis services.' },
-  { title: 'Smart Classrooms Setup', category: 'Education Program', url: '/programs/education', description: 'Equipping rural primary schools with interactive digital screens, curated regional educational software, and solar backup systems.' },
-  { title: 'Hans Udhyamita Mission', category: 'Livelihoods Program', url: '/programs/livelihood', description: 'Empowering rural women through vocational tailoring skills, micro-grants, agricultural input support, and market links.' },
-  { title: 'Prosthetics & Assistive Aids Camp', category: 'Disability Inclusion', url: '/programs/disability-inclusion', description: 'Manufacturing and distributing custom high-grade prosthetic limbs, wheelchairs, and tricycles in remote camps.' },
-  { title: 'Cochlear Implant Surgery Assistance', category: 'Disability Inclusion', url: '/programs/disability-inclusion', description: 'Funding critical ear surgeries and speech-therapy sessions for children under 5 to mainstream them into regular schools.' },
-  { title: 'Hans Jal Dhara Clean Water Grid', category: 'Climate Action', url: '/programs/climate-action', description: 'Constructing village piped drinking water networks, gravity-fed water supplies, and spring-shed recharge zones.' },
-  { title: 'Disaster Emergency Ration Relief', category: 'Disaster Relief', url: '/programs/disaster-relief', description: 'Delivering urgent food supplies, medical kits, and post-disaster house reconstruction packages.' },
-  { title: 'Shreya Hearing Recovery Case Study', category: 'Blog Story', url: '/blog/hearing-loss-to-classroom-stars', description: 'How our cochlear implants program helped a six-year-old girl gain her hearing back and join regular primary schooling.' },
-  { title: 'Careers Program Manager Healthcare vacancy', category: 'Careers Listing', url: '/careers/program-manager-healthcare', description: 'Lead the operations of 15+ Mobile Medical Units and coordinate clinical dialysis centers partnerships in Uttarakhand.' },
-];
 
 interface SearchPageProps {
   searchParams: Promise<{ [key: string]: string | string[] | undefined }>;
@@ -34,17 +21,48 @@ export default function SearchPage({ searchParams }: SearchPageProps) {
   const initialQuery = (resolvedSearchParams.q as string) || '';
 
   const [query, setQuery] = useState(initialQuery);
+  const [results, setResults] = useState<SearchResult[]>([]);
+  const [loading, setLoading] = useState(false);
   const [activeTab, setActiveTab] = useState<'all' | 'programs' | 'stories'>('all');
 
-  const filteredResults = searchableContent.filter(item => {
-    const matchesQuery = item.title.toLowerCase().includes(query.toLowerCase()) || 
-                         item.description.toLowerCase().includes(query.toLowerCase()) ||
-                         item.category.toLowerCase().includes(query.toLowerCase());
-    
-    if (!matchesQuery) return false;
-    
-    if (activeTab === 'programs') return item.category.includes('Program') || item.category.includes('Inclusion') || item.category.includes('Action') || item.category.includes('Relief');
-    if (activeTab === 'stories') return item.category.includes('Blog');
+  useEffect(() => {
+    const fetchSearchResults = async () => {
+      if (!query.trim()) {
+        setResults([]);
+        return;
+      }
+      setLoading(true);
+      try {
+        const res = await fetch(`/api/search?q=${encodeURIComponent(query)}`);
+        if (res.ok) {
+          const data = await res.json();
+          setResults(data);
+        }
+      } catch (err) {
+        console.error('Search API error:', err);
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    const delayDebounce = setTimeout(() => {
+      fetchSearchResults();
+    }, 300);
+
+    return () => clearTimeout(delayDebounce);
+  }, [query]);
+
+  const filteredResults = results.filter(item => {
+    if (activeTab === 'programs') {
+      return item.category.includes('Program') || 
+             item.category.includes('Inclusion') || 
+             item.category.includes('Action') || 
+             item.category.includes('Relief') || 
+             item.category.includes('Vacancy');
+    }
+    if (activeTab === 'stories') {
+      return item.category.includes('Story') || item.category.includes('Blog');
+    }
     return true;
   });
 
@@ -88,7 +106,7 @@ export default function SearchPage({ searchParams }: SearchPageProps) {
               onClick={() => setActiveTab('all')}
               className={`${styles.tabBtn} ${activeTab === 'all' ? styles.activeTab : ''}`}
             >
-              All Results ({filteredResults.length})
+              All Results ({loading ? '...' : filteredResults.length})
             </button>
             <button
               onClick={() => setActiveTab('programs')}
@@ -106,7 +124,11 @@ export default function SearchPage({ searchParams }: SearchPageProps) {
         </div>
 
         {/* Search Results list */}
-        {filteredResults.length > 0 ? (
+        {loading ? (
+          <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'center', minHeight: '200px', color: 'var(--text-secondary)' }}>
+            <span>Searching SQLite database...</span>
+          </div>
+        ) : filteredResults.length > 0 ? (
           <div className={styles.resultsList}>
             {filteredResults.map((result, idx) => (
               <div key={idx} className={`${styles.resultCard} glass`}>
@@ -132,3 +154,4 @@ export default function SearchPage({ searchParams }: SearchPageProps) {
     </div>
   );
 }
+export const dynamic = 'force-dynamic';
