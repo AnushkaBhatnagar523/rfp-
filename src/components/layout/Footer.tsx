@@ -114,8 +114,11 @@ export default function Footer() {
               <li><Link href="/resources/financial-statements">Financial Statements</Link></li>
               <li><Link href="/resources/policies">Governance & Policies</Link></li>
               <li><Link href="/resources/downloads">Brochures & Downloads</Link></li>
+              <li><Link href="/publications">Research & Publications</Link></li>
+              <li><Link href="/tenders">Tenders & RFPs</Link></li>
+              <li><Link href="/procurement">Procurement & Vendors</Link></li>
+              <li><Link href="/events">Upcoming Events</Link></li>
               <li><Link href="/blog">Success Stories Blog</Link></li>
-              <li><Link href="/news-media/photo-gallery">Media Kits</Link></li>
             </ul>
           </div>
 

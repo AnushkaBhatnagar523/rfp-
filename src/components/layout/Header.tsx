@@ -81,6 +81,10 @@ export default function Header() {
         { title: 'Financial Statements', href: '/resources/financial-statements', description: 'Audited balance sheets, trust deeds, & 80G tax docs.', icon: <FileText size={18} /> },
         { title: 'Policies', href: '/resources/policies', description: 'Code of conduct, child protection, and whistleblowing policies.', icon: <Shield size={18} /> },
         { title: 'Downloads', href: '/resources/downloads', description: 'Media kits, brochures, and informational sheets.', icon: <FileText size={18} /> },
+        { title: 'Publications', href: '/publications', description: 'Our research papers, newsletters, and policy booklets.', icon: <FileText size={18} /> },
+        { title: 'Tenders', href: '/tenders', description: 'Active bidding notices, specifications, and packets.', icon: <FileText size={18} /> },
+        { title: 'Procurement', href: '/procurement', description: 'Empanelment process, vendor registration, and guidelines.', icon: <Shield size={18} /> },
+        { title: 'Events', href: '/events', description: 'Upcoming summits, webinars, and field camps.', icon: <Calendar size={18} /> },
       ]
     },
     { label: 'Volunteer', href: '/volunteer' },

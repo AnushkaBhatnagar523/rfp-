@@ -1,0 +1,234 @@
+.page {
+  width: 100%;
+}
+
+.banner {
+  position: relative;
+  padding: 7rem 0 5rem;
+  background: linear-gradient(135deg, rgba(10, 37, 64, 0.98), rgba(16, 79, 124, 0.9));
+  color: white;
+  overflow: hidden;
+}
+
+.bannerBg {
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: radial-gradient(circle at 80% 20%, rgba(241, 90, 36, 0.15) 0%, transparent 50%);
+  pointer-events: none;
+}
+
+.bannerContent {
+  position: relative;
+  z-index: 1;
+}
+
+.bannerContent h1 {
+  font-size: clamp(2.2rem, 1.8rem + 2.5vw, 3.5rem);
+  color: white;
+  margin: 0.5rem 0 1rem;
+  max-width: 800px;
+  line-height: 1.15;
+}
+
+.bannerContent p {
+  color: rgba(255, 255, 255, 0.85);
+  max-width: 650px;
+  font-size: var(--font-size-md);
+}
+
+.sub {
+  display: inline-block;
+  font-size: var(--font-size-xs);
+  font-weight: 800;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+  color: var(--accent);
+}
+
+.container {
+  max-width: var(--container-max);
+  margin: 0 auto;
+  padding: 0 1.5rem;
+}
+
+.mainContent {
+  padding: 5rem 0;
+  background-color: var(--bg-secondary);
+}
+
+.controlsRow {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 3rem;
+  flex-wrap: wrap;
+  gap: 1.5rem;
+}
+
+.tabs {
+  display: flex;
+  gap: 0.5rem;
+  padding: 0.25rem;
+  background-color: var(--bg-tertiary);
+  border-radius: var(--radius-md);
+  border: 1px solid var(--border-light);
+}
+
+.tabBtn {
+  padding: 0.6rem 1.5rem;
+  border-radius: var(--radius-sm);
+  font-size: var(--font-size-sm);
+  font-weight: 600;
+  color: var(--text-secondary);
+  background: none;
+  border: none;
+  cursor: pointer;
+  transition: all var(--transition-fast);
+}
+
+.activeTab {
+  color: var(--text-primary);
+  background-color: var(--bg-primary);
+  box-shadow: var(--shadow-sm);
+}
+
+.tabBtn:hover:not(.activeTab) {
+  color: var(--text-primary);
+}
+
+.grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(350px, 1fr));
+  gap: 2rem;
+}
+
+.card {
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+  border-radius: var(--radius-lg);
+  overflow: hidden;
+  transition: transform var(--transition-normal), box-shadow var(--transition-normal);
+  border: 1px solid var(--border-light);
+  background-color: var(--bg-primary);
+}
+
+.card:hover {
+  transform: translateY(-5px);
+  box-shadow: var(--shadow-lg);
+}
+
+.cardImageWrapper {
+  position: relative;
+  height: 200px;
+  width: 100%;
+  background-color: var(--bg-tertiary);
+  overflow: hidden;
+}
+
+.cardImage {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  transition: transform var(--transition-slow);
+}
+
+.card:hover .cardImage {
+  transform: scale(1.05);
+}
+
+.statusBadge {
+  position: absolute;
+  top: 1rem;
+  right: 1rem;
+  padding: 0.35rem 0.8rem;
+  border-radius: var(--radius-full);
+  font-size: var(--font-size-xs);
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  z-index: 2;
+  box-shadow: var(--shadow-sm);
+}
+
+.statusUpcoming {
+  background-color: var(--accent);
+  color: white;
+}
+
+.statusPast {
+  background-color: var(--text-tertiary);
+  color: white;
+}
+
+.cardContent {
+  padding: 1.5rem;
+  display: flex;
+  flex-direction: column;
+  flex-grow: 1;
+}
+
+.dateBlock {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  font-size: var(--font-size-sm);
+  color: var(--accent);
+  font-weight: 600;
+  margin-bottom: 0.75rem;
+}
+
+.cardContent h3 {
+  font-size: var(--font-size-lg);
+  color: var(--text-primary);
+  margin-bottom: 0.75rem;
+  line-height: 1.3;
+}
+
+.cardContent p {
+  color: var(--text-secondary);
+  font-size: var(--font-size-sm);
+  line-height: 1.6;
+  margin-bottom: 1.5rem;
+  flex-grow: 1;
+}
+
+.metaRow {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding-top: 1rem;
+  border-top: 1px solid var(--border-light);
+  font-size: var(--font-size-xs);
+  color: var(--text-tertiary);
+}
+
+.metaItem {
+  display: flex;
+  align-items: center;
+  gap: 0.4rem;
+}
+
+.registerLink {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+  color: var(--secondary);
+  font-weight: 700;
+  text-decoration: none;
+  font-size: var(--font-size-sm);
+  transition: color var(--transition-fast);
+}
+
+.registerLink:hover {
+  color: var(--accent);
+}
+
+@media (max-width: 600px) {
+  .grid {
+    grid-template-columns: 1fr;
+  }
+}
